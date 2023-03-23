@@ -9,10 +9,16 @@ namespace Lab3
     {
         static void Main(string[] args)
         {
-            List<int> intList = GenerateRandomIntList(10000, 5000);
+            //List<int> intList = GenerateRandomIntList(1000, 500);
+            //List<int> intList = GenerateNearlyOrderedIntList(1000, 500);
+            //List<int> intList = GenerateReversedIntList(1000, 500);
 
-            double totalTime = 0.0;
-            double averageTime = 0.0;
+            //int[] intArray = GenerateRandomIntArray(1000, 500);
+            //int[] intArray = GenerateNearlyOrderedIntArray(1000, 500);
+            int[] intArray = GenerateReversedIntArray(100000, 500000);
+
+            TimeSpan totalTime = default(TimeSpan);
+            TimeSpan averageTime = default(TimeSpan);
 
 
             //List<double> doubleList = GenerateRandomDoubleList(100, 500);
@@ -21,39 +27,39 @@ namespace Lab3
             //Console.WriteLine("[{0}]", string.Join(", ", doubleList.ToArray()));
 
 
-            BubbleSort<int> bubbleSort = new BubbleSort<int>();
+            /*BubbleSort<int> bubbleSort = new BubbleSort<int>();
             Console.WriteLine("BUBBLE SORT");
 
             totalTime = 0;
 
             for (int i = 0; i < 11; i++)
             {
-                List<int> intListCopy = new List<int>(intList);   // make a copy of the original unsorted array
+                List<int> intListCopy = new List<int>(intList);   // make a copy of the original array
 
                 totalTime += TimeSort<int>(bubbleSort, intListCopy);
             }
 
             averageTime = totalTime / 11;
-            Console.WriteLine($"{averageTime}");
+            Console.WriteLine($"{averageTime}");*/
 
 
+            /*
+                        InsertionSort<int> insertionSort = new InsertionSort<int>();
+                        Console.WriteLine("INSERTION SORT");
+                        totalTime = 0;
 
-            InsertionSort<int> insertionSort = new InsertionSort<int>();
-            Console.WriteLine("INSERTION SORT");
-            totalTime = 0;
+                        for (int i = 0; i < 11; i++)
+                        {
+                            List<int> intListCopy = new List<int>(intList);   // make a copy of the original unsorted array
 
-            for (int i = 0; i < 11; i++)
-            {
-                List<int> intListCopy = new List<int>(intList);   // make a copy of the original unsorted array
+                            totalTime += TimeSort<int>(insertionSort, intListCopy);
+                        }
 
-                totalTime += TimeSort<int>(insertionSort, intListCopy);
-            }
+                        averageTime = totalTime / 11;
+                        Console.WriteLine($"{averageTime}");
+            */
 
-            averageTime = totalTime / 11;
-            Console.WriteLine($"{averageTime}");
-
-
-
+            /*
             BucketSort bucketSort = new BucketSort();
             Console.WriteLine("BUCKET SORT");
             totalTime = 0;
@@ -66,7 +72,7 @@ namespace Lab3
             }
 
             averageTime = totalTime / 11;
-            Console.WriteLine($"{averageTime}");
+            Console.WriteLine($"Average time: {averageTime}");*/
 
 
             //Console.WriteLine("[{0}]", string.Join(", ", intList.ToArray()));
@@ -80,8 +86,19 @@ namespace Lab3
             //HeapSort<int> heapSort = new HeapSort<int>();
             //heapSort.Sort(ref intList);
 
-            //MergeSort<int> mergeSort = new MergeSort<int>();
-            //mergeSort.Sort(ref intList);
+            /*MergeSort<int> MergeSort = new MergeSort<int>();
+            Console.WriteLine("MERGE SORT");
+            totalTime = 0;
+
+            for (int i = 0; i < 11; i++)
+            {
+                List<int> intListCopy = new List<int>(intList);   // make a copy of the original unsorted array
+
+                totalTime += TimeSort<int>(MergeSort, intListCopy);
+            }
+
+            averageTime = totalTime / 11;
+            Console.WriteLine($"{averageTime}");*/
 
             //InsertionSort<int> insertionSort = new InsertionSort<int>();
             //insertionSort.Sort(ref intList);
@@ -126,10 +143,26 @@ namespace Lab3
             //intListCopy = new List<int>(intList);   // make a copy of the original unsorted array
             //TimeSort(bubbleSort, intListCopy);
 
+            RadixSort RadixSort = new RadixSort();
+            Console.WriteLine("RADIX SORT");
+            totalTime = default(TimeSpan);
 
+            for (int i = 0; i < 11; i++)
+            {
+                int[] intListCopy = intArray;   // make a copy of the original unsorted array
 
+                // start timer
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+                RadixSort.Sort(intListCopy);
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                Console.WriteLine(ts);
+                totalTime = stopWatch.Elapsed;
+            }
 
-
+            averageTime = totalTime / 11;
+            Console.WriteLine($"Average: {averageTime}");
         }
 
         public static double TimeSort<T>(ISortable<T> sortable, List<T> items) where T : IComparable<T>
@@ -208,5 +241,121 @@ namespace Lab3
 
             return list;
         }
+
+        public static List<int> GenerateNearlyOrderedIntList(int length, int maxValue)
+        {
+            List<int> list = new List<int>();
+            Random random = new Random();
+
+            for(int i = 0; i < length; i++)
+            {
+                list.Add(i);
+            }
+
+            for(int i = 0; i < length / 40; i++)
+            {
+                int randomPos1 = random.Next(length);
+                int randomPos2 = random.Next(length);
+                int randomInt1 = list[randomPos1];
+                int randomInt2 = list[randomPos2];
+
+                list[randomPos1] = randomInt1;
+                list[randomPos2] = randomInt2;
+            }
+            return list;
+        }
+
+        public static List<double> GenerateNearlyOrderedDoubleList(int length, double maxValue)
+        {
+            List<double> list = new List<double>();
+            Random random = new Random();
+
+            for (int i = 0; i < length; i++)
+            {
+                list.Add(i);
+            }
+
+            for (int i = 0; i < length / 40; i++)
+            {
+                int randomPos1 = random.Next(length);
+                int randomPos2 = random.Next(length);
+                double randomDouble1 = list[randomPos1];
+                double randomDouble2 = list[randomPos2];
+
+                list[randomPos1] = randomDouble1;
+                list[randomPos2] = randomDouble2;
+            }
+            return list;
+        }
+
+        public static List<int> GenerateReversedIntList(int length, int maxValue)
+        {
+            List<int> list = new List<int>();
+
+            for(int i = length; i > 0; i--)
+            {
+                list.Add(i);
+            }
+            return list;
+        }
+
+        public static List<double> GenerateReversedDoubleList(int length, double maxValue)
+        {
+            List<double> list = new List<double>();
+
+            for (int i = length; i > 0; i--)
+            {
+                list.Add(i);
+            }
+            return list;
+        }
+        public static int[] GenerateRandomIntArray(int length, int maxValue)
+        {
+            int[] array = new int[length];
+
+            Random random = new Random();
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = random.Next(maxValue);
+            }
+
+            return array;
+        }
+        public static int[] GenerateNearlyOrderedIntArray(int length, int maxValue)
+        {
+            int[] array = new int[length];
+            Random random = new Random();
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = i;
+            }
+
+            for (int i = 0; i < length / 40; i++)
+            {
+                int randomPos1 = random.Next(length);
+                int randomPos2 = random.Next(length);
+                int randomInt1 = array[randomPos1];
+                int randomInt2 = array[randomPos2];
+
+                array[randomPos1] = randomInt1;
+                array[randomPos2] = randomInt2;
+            }
+            return array;
+        }
+
+        public static int[] GenerateReversedIntArray(int length, int maxValue)
+        {
+            int[] array = new int[length];
+
+            for (int i = length - 1; i > 0; i--)
+            {
+                array[i] = length - i;
+            }
+
+            return array;
+        }
+
     }
 }
